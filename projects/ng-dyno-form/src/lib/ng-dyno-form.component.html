@@ -1,0 +1,172 @@
+<!-- Form Element -->
+<form [formGroup]="dynamicForm" [attr.data-bs-theme]="mode">
+    <div class="{{ mainClass }}">
+      <!-- Loop through form fields -->
+      <ng-container *ngFor="let field of config; let i = index">
+        <div *ngIf="!field.condition || field.condition(dynamicForm.value)" class="{{ field.parentClass }} position-relative">
+          <!-- Check for checkbox type -->
+          <ng-container *ngIf="field.type === 'checkbox'">
+            <input
+              [formControlName]="field.name"
+              type="checkbox"
+              class="{{ field.class }}"
+              (change)="eventCall($event, 'change', field?.section, field.name)"
+            />
+          </ng-container>
+          <!-- Label for non-form types -->
+          <label *ngIf="!nonFormTypes.includes(field.type) && field.label" class="{{ field.labelClass }}">
+            {{ field.label }}
+            <span style="color: red;" *ngIf="field.required">*</span>
+          </label>
+          <!-- Input fields for text, number, email, password -->
+          <ng-container *ngIf="['text', 'number', 'email', 'password'].includes(field.type)">
+            <input
+              [formControlName]="field.name"
+              [type]="field.type === 'password' ? (passwordVisibility[field.name] ? 'text' : 'password') : field.type"
+              class="{{ field.class }}"
+              (input)="eventCall($event, 'input', field?.section, field.name)"
+              (focus)="eventCall($event, 'focus', field?.section, field.name)"
+              (blur)="eventCall($event, 'input', field?.section, field.name)"
+            />
+            <span class="view-icon" *ngIf="field.type === 'password'" (click)="passwordVisibility[field.name] = !passwordVisibility[field.name]"
+              [ngClass]="!passwordVisibility[field.name] ? 'eye' : 'eye-slash'" style="cursor: pointer;">
+              <!-- SVG icons for password visibility -->
+              <svg xmlns="http://www.w3.org/2000/svg" *ngIf="!passwordVisibility[field.name]" viewBox="0 0 256 256">
+                <!-- Path for the eye icon -->
+              </svg>
+              <svg xmlns="http://www.w3.org/2000/svg" *ngIf="passwordVisibility[field.name]" viewBox="0 0 256 256">
+                <!-- Path for the crossed eye icon -->
+              </svg>
+            </span>
+          </ng-container>
+          <!-- Textarea field -->
+          <ng-container *ngIf="field.type === 'textarea'">
+            <textarea
+              [formControlName]="field.name"
+              class="{{ field.class }}"
+              rows="{{ field?.extra?.rows || 1 }}"
+              (input)="eventCall($event, 'input', field?.section, field.name)"
+              (focus)="eventCall($event, 'focus', field?.section, field.name)"
+              (blur)="eventCall($event, 'input', field?.section, field.name)"
+            ></textarea>
+          </ng-container>
+          <!-- Select dropdown -->
+          <ng-container *ngIf="field.type === 'select'">
+            <!-- Dropdown component with various event listeners -->
+            <ng-select #select
+              [formControlName]="field.name"
+              class="{{ field.class }}"
+              [items]="selectList[field.name]"
+              [multiple]="field?.extra?.multi || false"
+              [bindLabel]="field?.extra?.label || ''"
+              [bindValue]="field?.extra?.key || ''"
+              [searchable]="false"
+              (change)="eventCall($event, 'change', field?.section, field.name)"
+              (close)="eventCall($event, 'close', field?.section, field.name)"
+              (open)="eventCall($event, 'focus', field?.section, field.name)"
+              (clear)="eventCall($event, 'clear', field?.section, field.name)"
+              (focus)="eventCall($event, 'focus', field?.section, field.name)"
+              (search)="eventCall($event, 'search', field?.section, field.name)"
+              (blur)="eventCall($event, 'blur', field?.section, field.name)"
+            >
+              <!-- Custom search input -->
+              <ng-template ng-header-tmp>
+                <input #check style="width: 100%; line-height: 24px;" type="text" name="type" placeholder="Search Key"
+                  (input)="select.filter(check.value)" />
+              </ng-template>
+            </ng-select>
+          </ng-container>
+          <!-- Heading -->
+          <ng-container *ngIf="field.type === 'heading'">
+            <div class="{{ field.class }}" [innerHTML]="field.label"></div>
+          </ng-container>
+          <!-- Radio buttons -->
+          <ng-container *ngIf="field.type === 'radio'">
+            <div class="{{ field?.extra?.customClass }}">
+              <ng-container *ngFor="let item of field?.extra?.options || []">
+                <div class="{{ field.class }}">
+                  <input
+                    [formControlName]="field.name"
+                    type="radio"
+                    id="radio-{{ i }}"
+                    class="{{ field.class }}-input"
+                    [value]="field?.extra?.key ? item[field.extra?.key || ''] : item"
+                    (change)="eventCall($event, 'change', field?.section, field.name)"
+                  />
+                  <label class="{{ field.class }}-label" for="radio-{{ i }}">
+                    {{ field?.extra?.label ? item[field.extra?.label || ''] : item }}
+                  </label>
+                </div>
+              </ng-container>
+            </div>
+          </ng-container>
+          <!-- Date input -->
+          <ng-container *ngIf="field.type === 'date'">
+            <input type="text"
+              [formControlName]="field.name"
+              class="{{ field.class }}"
+              [bsConfig]="{
+                dateInputFormat: field?.extra?.format || 'DD-MM-YYYY',
+                adaptivePosition: true,
+                containerClass: field?.extra?.theme || 'theme-dark-blue',
+                minMode: field?.extra?.mode || 'day'
+              }"
+              [minDate]="field?.extra?.minDate || undefined"
+              [maxDate]="field?.extra?.maxDate || undefined"
+              (bsValueChange)="eventCall($event, 'date', field?.section, field.name)"
+              bsDatepicker>
+          </ng-container>
+          <!-- Date range input -->
+          <ng-container *ngIf="field.type === 'daterange'">
+            <input type="text"
+              [formControlName]="field.name"
+              class="{{ field.class }}"
+              [bsConfig]="{
+                rangeInputFormat: field?.extra?.format || 'DD-MM-YYYY',
+                adaptivePosition: true,
+                containerClass: field?.extra?.theme || 'theme-dark-blue',
+                minMode: field?.extra?.mode || 'day'
+              }"
+              [minDate]="field?.extra?.minDate || undefined"
+              [maxDate]="field?.extra?.maxDate || undefined"
+              (bsValueChange)="eventCall($event, 'date', field?.section, field.name)"
+              bsDaterangepicker>
+          </ng-container>
+          <!-- File input -->
+          <ng-container *ngIf="field.type === 'file'">
+            <input
+              [type]="'file'"
+              id="fileInput-{{ i }}"
+              class="{{ field.class }} {{ field?.extra?.customText ? 'd-none' : '' }}"
+              (change)="onFileSelected($event, field?.section, field.name)"
+              [accept]="field?.extra?.format"
+              [disabled]="field.disable">
+            <label
+              for="fileInput-{{ i }}"
+              class="{{ field?.extra?.customClass }} {{ field.disable ? 'disabled' : '' }}"
+              *ngIf="field?.extra?.customClass">
+              {{ dynamicForm.get(field.name + '_name')?.value ? dynamicForm.get(field.name + '_name')?.value : (field?.extra?.customText || 'No file chosen') }}
+            </label>
+          </ng-container>
+          <!-- Button -->
+          <ng-container *ngIf="field.type === 'button'">
+            <button class="{{ field.class }}" (click)="eventCall($event, 'click', field?.section, field.name, field?.extra?.submit || false)">
+              {{ field.label }}
+            </button>
+          </ng-container>
+          <!-- Validation error messages -->
+          <div *ngIf="!controls[field.name]?.valid && controls[field.name]?.touched && field?.extra?.validationMessages"
+            class="validation-error">
+            <span class="text-danger" *ngIf="controls[field.name]?.errors?.['required']">
+              {{ field?.extra?.validationMessages?.required }}
+            </span>
+            <span class="text-danger" *ngIf="controls[field.name]?.errors?.['pattern']">
+              {{ field?.extra?.validationMessages?.pattern }}
+            </span>
+          </div>
+        </div>
+      </ng-container>
+      <ng-content></ng-content>
+    </div>
+  </form>
+  
