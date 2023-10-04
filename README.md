@@ -1,5 +1,3 @@
-Creating a library for your `DynoForm` with comprehensive documentation is a great idea! Proper documentation will make it easier for users to understand and utilize your library effectively. Below is a template for your documentation in Markdown format. Please replace placeholders with actual content:
-
 ```markdown
 # DynoForm Library
 
@@ -114,7 +112,3 @@ This library is licensed under the [MIT License](link-to-license).
 
 **DynoForm** - Build Dynamic Forms in Angular with Ease!
 ```
-
-Remember to replace the placeholders (`#`, `link-to-image`, `link-to-license`, etc.) with actual content, images, and links. Additionally, create a StackBlitz demo for users to interact with and provide code snippets for configuring `DynoFormConfig`.
-
-Once you've filled in the content and provided real examples, your documentation will be ready for publishing with your `DynoForm` library on npm.
