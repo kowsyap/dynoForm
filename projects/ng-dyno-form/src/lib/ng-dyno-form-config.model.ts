@@ -54,11 +54,13 @@ export interface DynoFormConfig {
     name: string;
     type: DynoFormType;
     label?: string;
+    placeholder?: string;
     required?: boolean;
     pattern?: string | RegExp;
     class?: string;
     parentClass?: string;
     labelClass?: string;
+    floatLabel?: boolean;
     value?: any;
     section?: string;
     extra?: ExtraDynoFormConfigMap[DynoFormType];

@@ -1,27 +1,120 @@
-# DynoForm
+Creating a library for your `DynoForm` with comprehensive documentation is a great idea! Proper documentation will make it easier for users to understand and utilize your library effectively. Below is a template for your documentation in Markdown format. Please replace placeholders with actual content:
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.2.4.
+```markdown
+# DynoForm Library
 
-## Development server
+The **DynoForm** library allows you to create dynamic reactive forms in Angular with ease. It offers a wide range of customization options and methods to build forms tailored to your needs.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+## Features
 
-## Code scaffolding
+1. **Field Types**: Create various types of fields including text, number, password, email, radio, checkbox, select, textarea, button, heading, date, daterange, and file.
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+2. **Mandatory Fields**: Define fields as mandatory, ensuring users provide necessary information.
 
-## Build
+3. **Validation Patterns**: Set validation patterns for fields to ensure data integrity.
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+4. **Error and Validation Messages**: Customize error messages for validation errors.
 
-## Running unit tests
+5. **Class Customization**: Add custom CSS classes to labels, fields, and parent elements for unique designs.
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+6. **Labels**: Include labels for each field to provide context to users.
 
-## Running end-to-end tests
+7. **Placeholders**: Set placeholders to guide users on expected input.
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+8. **Field Disabling**: Disable fields as needed.
 
-## Further help
+9. **Conditional Field Visibility**: Hide fields based on specified conditions.
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+10. **Custom Properties**: Configure properties like minDate and maxDate based on field type.
+
+11. **Section-Based Validation**: Perform validation and submit forms section by section.
+
+12. **Form Control Methods**: Utilize methods to set, patch, or clear values, enable or disable fields, and handle form and section submissions.
+
+13. **Event Handling**: Capture various events including file change, focus, blur, click, and change.
+
+## Documentation Sections
+
+1. [Installation](#installation)
+2. [Usage](#usage)
+3. [Configuration](#configuration)
+4. [Form Creation](#form-creation)
+5. [Field Customization](#field-customization)
+6. [Validation](#validation)
+7. [Event Handling](#event-handling)
+8. [Examples](#examples)
+9. [API Reference](#api-reference)
+
+## Installation
+
+Install the **DynoForm** library via npm:
+
+```bash
+npm install dynoform-library
+```
+
+## Usage
+
+Import the `DynoForm` module in your Angular application and start building dynamic forms quickly.
+
+```typescript
+import { DynoFormModule } from 'dynoform-library';
+
+@NgModule({
+  declarations: [...],
+  imports: [DynoFormModule, ...],
+  ...
+})
+export class YourModule { }
+```
+
+## Configuration
+
+To configure your dynamic form, create a `DynoFormConfig` array with the desired field settings. Each field can have properties such as `name`, `type`, `label`, `required`, and more. Refer to the [DynoFormConfig Interface](#api-reference) for details.
+
+## Form Creation
+
+Use the `dynoForm` directive to generate the form in your HTML template. Bind it to your `DynoFormConfig` array.
+
+```html
+<form [formGroup]="dynamicForm" dynoForm [config]="formConfig"></form>
+```
+
+## Field Customization
+
+Customize each field with options like validation patterns, error messages, CSS classes, and more directly within the `DynoFormConfig`.
+
+## Validation
+
+Define validation patterns and error messages for each field to ensure data accuracy. Handle form validation and submission section by section.
+
+## Event Handling
+
+Capture events like file changes, focus, blur, clicks, and changes using event handlers provided by the library.
+
+## Examples
+
+For detailed examples and live demos, visit our [StackBlitz Demo](#) or view example images below.
+
+### Example Images
+
+![Example Image 1](link-to-image-1)
+![Example Image 2](link-to-image-2)
+...
+
+## API Reference
+
+For a complete reference of the `DynoFormConfig` interface and available methods, see the [API Reference](#).
+
+## License
+
+This library is licensed under the [MIT License](link-to-license).
+
+---
+
+**DynoForm** - Build Dynamic Forms in Angular with Ease!
+```
+
+Remember to replace the placeholders (`#`, `link-to-image`, `link-to-license`, etc.) with actual content, images, and links. Additionally, create a StackBlitz demo for users to interact with and provide code snippets for configuring `DynoFormConfig`.
+
+Once you've filled in the content and provided real examples, your documentation will be ready for publishing with your `DynoForm` library on npm.

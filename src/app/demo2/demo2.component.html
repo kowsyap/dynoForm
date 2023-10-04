@@ -1,0 +1,23 @@
+<div class="row g-0" style="height: 100vh;width: 100vw;;">
+    <div class="col-6 d-flex">
+        <div class="container1">
+                <dyno-form [config]="config1" mainClass="card" (callBack)="callBackActions($event)" #f1>
+                </dyno-form>
+        </div>
+    </div>
+    <div class="col-6 d-flex">
+        <div class="container2">
+                <dyno-form [config]="config2" mainClass="wrapper" (callBack)="callBackActions($event)" #f2>
+                </dyno-form>
+        </div>
+    </div>
+    <div class="col-12 d-flex bgc3">
+        <div class="container3">
+            <div class="text">
+                Contact us Form
+             </div>
+            <dyno-form [config]="config3" mainClass="form-row row" (callBack)="callBackActions($event)" #f3>
+            </dyno-form>
+        </div>
+    </div>
+</div>

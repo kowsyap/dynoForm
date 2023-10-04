@@ -28,3 +28,386 @@
     flex-direction: column;
     align-items: center;
 }
+
+.container1,.container2{
+  flex: 1;
+  justify-content: center;
+  display: flex;
+  align-items: center;
+  margin: 20px;
+}
+
+.login {
+    color: #000;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    display: block;
+    font-weight: bold;
+    font-size: x-large;
+}
+  
+.container1 .card {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 350px;
+    width: 300px;
+    flex-direction: column;
+    gap: 35px;
+    background: #e3e3e3;
+    box-shadow: 16px 16px 32px #c8c8c8,
+          -16px -16px 32px #fefefe;
+    border-radius: 8px;
+}
+  
+  .inputBox {
+    position: relative;
+    width: 250px;
+  }
+  
+  .inputBox input {
+    width: 100%;
+    padding: 10px;
+    outline: none;
+    border: none;
+    color: #000;
+    font-size: 1em;
+    background: transparent;
+    border-left: 2px solid #000;
+    border-bottom: 2px solid #000;
+    transition: 0.1s;
+    border-bottom-left-radius: 8px;
+  }
+  
+  .inputBox label {
+    margin-top: 5px;
+    position: absolute;
+    left: 0;
+    transform: translateY(-4px);
+    margin-left: 10px;
+    padding: 10px;
+    pointer-events: none;
+    font-size: 12px;
+    color: #000;
+    text-transform: uppercase;
+    transition: 0.5s;
+    letter-spacing: 3px;
+    border-radius: 8px;
+  }
+  
+  .inputBox input:focus~label, .inputBox input:valid~label {
+    transform: translateX(113px) translateY(-15px);
+    font-size: 0.8em;
+    padding: 5px 10px;
+    background: #000;
+    letter-spacing: 0.2em;
+    color: #fff;
+    border: 2px;
+  }
+  
+  .inputBox input:focus {
+    border: 2px solid #000;
+    border-radius: 8px;
+  }
+  
+  .enter {
+    height: 45px;
+    width: 100px;
+    border-radius: 5px;
+    border: 2px solid #000;
+    cursor: pointer;
+    background-color: transparent;
+    transition: 0.5s;
+    text-transform: uppercase;
+    font-size: 10px;
+    letter-spacing: 2px;
+    margin-bottom: 1em;
+  }
+  
+  .enter:hover {
+    background-color: rgb(0, 0, 0);
+    color: white;
+  }
+  
+/* container 2  */
+
+.input, .c2button {
+  width: 100%;
+  height: 40px;
+  position: relative;
+  padding: 10px;
+  border: 0.1px solid #fd442f;
+}
+
+.c2button {
+  background: #fd442f;
+  border: none;
+  --i:1;
+}
+
+.wrapper {
+  position: relative;
+  transform: skewY(-14deg);
+}
+.wrapper div:nth-child(1){
+  --i:5;
+}
+.wrapper div:nth-child(2){
+  --i:4;
+}
+.wrapper div:nth-child(3){
+  --i:3;
+}
+.wrapper div:nth-child(4){
+  --i:2;
+}
+
+.wrapper div, .c2button {
+  position: relative;
+  list-style: none;
+  width: 200px;
+  z-index: var(--i);
+  transition: 0.3s;
+  color: white;
+}
+
+.wrapper div::before, .c2button::before {
+  position: absolute;
+  content: '';
+  background: #fd442f;
+  top: 0;
+  left: -40px;
+  width: 40px;
+  height: 40px;
+  transform-origin: right;
+  transform: skewY(45deg);
+  transition: 0.3s;
+}
+
+.wrapper div::after, .c2button::after {
+  position: absolute;
+  content: '';
+  background: #fd442f;
+  width: 200px;
+  height: 40px;
+  top: -40px;
+  left: 0;
+  transform-origin: bottom;
+  transform: skewX(45deg);
+  transition: 0.3s;
+}
+
+.wrapper div:nth-child(1)::after, .wrapper div:nth-child(1)::before {
+  background-color: #f1a299;
+}
+
+.wrapper div:nth-child(2)::after, .wrapper div:nth-child(2)::before {
+  background-color: #e3877c;
+}
+
+.wrapper div:nth-child(3)::after, .wrapper div:nth-child(3)::before {
+  background-color: #f0796c;
+}
+
+.wrapper div:nth-child(4)::after, .wrapper div:nth-child(4)::before {
+  background-color: #f96352;
+}
+
+.wrapper div .input {
+  outline: none;
+  border: none;
+  color: black;
+}
+
+.wrapper div .input::placeholder {
+  color: black;
+}
+
+.wrapper div:nth-child(1) .input {
+  background: #f1a299;
+}
+
+.wrapper div:nth-child(2) .input {
+  background: #e3877c;
+}
+
+.wrapper div:nth-child(3) .input {
+  background: #f0796c;
+}
+
+.wrapper div:nth-child(4) .input {
+  background: #f96352;
+}
+
+.wrapper div:nth-child(1) .input:focus {
+  outline: none;
+  border: 3.5px solid #f1a299;
+}
+
+.wrapper div:nth-child(2) .input:focus {
+  outline: none;
+  border: 3.5px solid #e3877c;
+}
+
+.wrapper div:nth-child(3) .input:focus {
+  outline: none;
+  border: 3.5px solid #f0796c;
+}
+
+.wrapper div:nth-child(4) .input:focus {
+  outline: none;
+  border: 3.5px solid #f96352;
+}
+
+.wrapper div:hover, .c2button:hover {
+  transform: translateX(-20px);
+}
+
+.c2button:hover, .c2button:hover::before, .c2button:hover::after {
+  background: #fd442f;
+}
+
+.c2button:active {
+  transform: translateX(0px);
+}
+
+/* container 3 */
+
+@import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700&display=swap');
+
+.bgc3{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(115deg, #56d8e4 10%, #9f01ea 90%);
+}
+.container3{
+  max-width: 800px;
+  background: #fff;
+  width: 800px;
+  padding: 25px 40px 10px 40px;
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+}
+.container3 .text{
+  text-align: center;
+  font-size: 41px;
+  font-weight: 600;
+  font-family: 'Poppins', sans-serif;
+  background: -webkit-linear-gradient(right, #56d8e4, #9f01ea, #56d8e4, #9f01ea);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.container3 form{
+  padding: 30px 0 0 0;
+}
+.container3 form .form-row{
+  display: flex;
+  margin: 32px 0;
+}
+form .form-row .input-data{
+  height: 40px;
+  margin: 10px 0;
+  position: relative;
+}
+form .form-row .textarea{
+  height: 70px;
+}
+.input-data input,
+.textarea textarea{
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: none;
+  font-size: 17px;
+  border-bottom: 2px solid rgba(0,0,0, 0.12);
+}
+
+.input-data input:focus-visible,
+.textarea textarea:focus-visible{
+  outline: unset;
+  border-bottom-color: #3498db;
+}
+
+.input-data input:focus ~ label, .textarea textarea:focus ~ label,
+.input-data input:valid ~ label, .textarea textarea:valid ~ label{
+  transform: translateY(-20px);
+  font-size: 14px;
+  color: #3498db;
+}
+.textarea textarea{
+  resize: none;
+  padding-top: 10px;
+}
+.input-data label{
+  position: absolute;
+  pointer-events: none;
+  bottom: 10px;
+  font-size: 16px;
+  transition: all 0.3s ease;
+}
+.textarea label{
+  width: 100%;
+  bottom: 40px;
+  background: #fff;
+}
+.input-data .underline{
+  position: absolute;
+  bottom: 0;
+  height: 2px;
+  width: 100%;
+}
+.input-data input:before{
+  position: absolute;
+  content: "";
+  height: 2px;
+  width: 100%;
+  background: #3498db;
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 0.3s ease;
+}
+.input-data input:focus ~ .underline:before,
+.input-data input:valid ~ .underline:before,
+.textarea textarea:focus ~ .underline:before,
+.textarea textarea:valid ~ .underline:before{
+  transform: scale(1);
+}
+.submit-btn .input-data{
+  overflow: hidden;
+  height: 45px!important;
+  width: 25%!important;
+}
+.submit-btn button{
+  height: 50px;
+  width: 100px;
+  background: -webkit-linear-gradient(right, #56d8e4, #9f01ea, #56d8e4, #9f01ea);
+  transition: all 0.4s;
+  border: none;
+  border-radius: 10px;
+  color: #fff;
+  font-size: 17px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+@media (max-width: 700px) {
+  .container3 .text{
+    font-size: 30px;
+  }
+  .container3 form{
+    padding: 10px 0 0 0;
+  }
+  .container3 form .form-row{
+    display: block;
+  }
+  form .form-row .input-data{
+    margin: 35px 0!important;
+  }
+  .submit-btn .input-data{
+    width: 40%!important;
+  }
+}

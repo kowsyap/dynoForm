@@ -10,7 +10,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 })
 export class NgDynoFormComponent {
 
-  @Input() config!:DynoFormConfig[];
+  @Input() config!:DynoFormConfig[]|any;
   @Input() mainClass:any;
   @Input() mode:'light'|'dark'='light';
   @Output('callBack') callBack: EventEmitter<any> = new EventEmitter();
@@ -67,7 +67,7 @@ export class NgDynoFormComponent {
   
   getTypeKeys = (type:any,value?:any,bool?:boolean) => (this.filterConfig(type,value,bool)).map((ele:any)=>ele['name']);
 
-  getTypeValues = (type:any,value?:any,bool?:boolean) => this.getTypeKeys(type,value,bool).reduce((acc, key) => (this.rawValues.hasOwnProperty(key)? { ...acc, [key]: this.rawValues[key] } : acc), {});
+  getTypeValues = (type:any,value?:any,bool?:boolean) => this.getTypeKeys(type,value,bool).reduce((acc:any, key:any) => (this.rawValues.hasOwnProperty(key)? { ...acc, [key]: this.rawValues[key] } : acc), {});
 
 
   addValidation(validation:any[],...ctrls:string[]){

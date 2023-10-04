@@ -3,7 +3,12 @@
     <div class="{{ mainClass }}">
       <!-- Loop through form fields -->
       <ng-container *ngFor="let field of config; let i = index">
-        <div *ngIf="!field.condition || field.condition(dynamicForm.value)" class="{{ field.parentClass }} position-relative">
+        <div *ngIf="!field.condition || field.condition(dynamicForm.value)" class="{{ field.parentClass }} {{field.type === 'file'?'position-relative':''}}">
+          <!-- Label for form types non floating -->
+          <label *ngIf="!nonFormTypes.includes(field.type) && field.label && !field.floatLabel" class="{{ field.labelClass }}">
+            {{ field.label }}
+            <span style="color: red;" *ngIf="field.required">*</span>
+          </label>
           <!-- Check for checkbox type -->
           <ng-container *ngIf="field.type === 'checkbox'">
             <input
@@ -13,15 +18,10 @@
               (change)="eventCall($event, 'change', field?.section, field.name)"
             />
           </ng-container>
-          <!-- Label for non-form types -->
-          <label *ngIf="!nonFormTypes.includes(field.type) && field.label" class="{{ field.labelClass }}">
-            {{ field.label }}
-            <span style="color: red;" *ngIf="field.required">*</span>
-          </label>
           <!-- Input fields for text, number, email, password -->
           <ng-container *ngIf="['text', 'number', 'email', 'password'].includes(field.type)">
-            <input
-              [formControlName]="field.name"
+            <input required
+              [formControlName]="field.name" [placeholder]="field?.placeholder||''"
               [type]="field.type === 'password' ? (passwordVisibility[field.name] ? 'text' : 'password') : field.type"
               class="{{ field.class }}"
               (input)="eventCall($event, 'input', field?.section, field.name)"
@@ -41,9 +41,9 @@
           </ng-container>
           <!-- Textarea field -->
           <ng-container *ngIf="field.type === 'textarea'">
-            <textarea
+            <textarea required
               [formControlName]="field.name"
-              class="{{ field.class }}"
+              class="{{ field.class }}" [placeholder]="field?.placeholder||''"
               rows="{{ field?.extra?.rows || 1 }}"
               (input)="eventCall($event, 'input', field?.section, field.name)"
               (focus)="eventCall($event, 'focus', field?.section, field.name)"
@@ -55,7 +55,7 @@
             <!-- Dropdown component with various event listeners -->
             <ng-select #select
               [formControlName]="field.name"
-              class="{{ field.class }}"
+              class="{{ field.class }}" [placeholder]="field?.placeholder||''"
               [items]="selectList[field.name]"
               [multiple]="field?.extra?.multi || false"
               [bindLabel]="field?.extra?.label || ''"
@@ -102,9 +102,10 @@
           </ng-container>
           <!-- Date input -->
           <ng-container *ngIf="field.type === 'date'">
-            <input type="text"
+            <input type="text" required
               [formControlName]="field.name"
               class="{{ field.class }}"
+              [placeholder]="field?.placeholder||''"
               [bsConfig]="{
                 dateInputFormat: field?.extra?.format || 'DD-MM-YYYY',
                 adaptivePosition: true,
@@ -118,9 +119,10 @@
           </ng-container>
           <!-- Date range input -->
           <ng-container *ngIf="field.type === 'daterange'">
-            <input type="text"
+            <input type="text" required
               [formControlName]="field.name"
               class="{{ field.class }}"
+              [placeholder]="field?.placeholder||''"
               [bsConfig]="{
                 rangeInputFormat: field?.extra?.format || 'DD-MM-YYYY',
                 adaptivePosition: true,
@@ -154,6 +156,11 @@
               {{ field.label }}
             </button>
           </ng-container>
+          <!-- Label for form types floating -->
+          <label *ngIf="!nonFormTypes.includes(field.type) && field.label && field.floatLabel" class="{{ field.labelClass }}">
+            {{ field.label }}
+            <span style="color: red;" *ngIf="field.required">*</span>
+          </label>
           <!-- Validation error messages -->
           <div *ngIf="!controls[field.name]?.valid && controls[field.name]?.touched && field?.extra?.validationMessages"
             class="validation-error">
