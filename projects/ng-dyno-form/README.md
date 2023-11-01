@@ -202,13 +202,12 @@ export class DemoComponent {
 
 For detailed examples and live demos, visit our [StackBlitz Demo](#) or view example images below.
 
-### Example Images
+### Sample Forms
 
-![Example Image 1](link-to-image-1)
-![Example Image 2](link-to-image-2)
-![Example Image 3](link-to-image-3)
-![Example Image 4](link-to-image-4)
-...
+![Example Image 1](./assets/form1.png)
+![Example Image 2](./assets/form2.png)
+![Example Image 3](./assets/form3.png)
+![Example Image 4](./assets/form4.png)
 
 ## API Reference
 
@@ -216,6 +215,6 @@ For a complete reference of the `DynoFormConfig` interface, see the [API Referen
 
 ## License
 
-This library is licensed under the [MIT License](link-to-license).
+This library is licensed under the [MIT License](#).
 
 ---
