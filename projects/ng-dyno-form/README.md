@@ -53,12 +53,29 @@ Install the **ng-dyno-form** library via npm:
 npm install ng-dyno-form
 ```
 
+Install the peer dependencies via npm:
+
+```bash
+ng add ngx-bootstrap
+npm i @ng-select/ng-select
+```
+
 ## Usage
 
-Import the `styles.css` file from **ng-dyno-form** in your global styles.css file.
+Add the `styles.css` file from **ng-dyno-form** and other necessary stylesheets in `angular.json`.
 
 ```css
-@import "../dist/ng-dyno-form/assets/styles.css";
+@import "node_modules/ng-dyno-form/assets/styles.css";
+```
+
+```json
+  ...,
+  "styles": [
+    "./node_modules/ng-dyno-form/assets/styles.css",
+    "./node_modules/ngx-bootstrap/datepicker/bs-datepicker.css",
+    "./node_modules/bootstrap/dist/css/bootstrap.min.css",
+    ...
+  ],
 ```
 
 Import the `NgDynoFormModule` module in your Angular application and start building dynamic forms quickly.
@@ -185,7 +202,7 @@ Here are the methods available in the DynoForm library:
 Here's an example of how to use the methods in your code:
 
 ```typescript
-import { DynoFormConfig } from 'ng-dyno-form';
+import { DynoFormConfig } from 'ng-dyno-form/lib/ng-dyno-form-config.model';
 
 
 export class DemoComponent {
@@ -200,7 +217,7 @@ export class DemoComponent {
 
 ## Examples
 
-For detailed examples and live demos, visit our [StackBlitz Demo](#) or view example images below.
+For detailed examples and live demos, visit our [StackBlitz Demo](https://stackblitz.com/edit/stackblitz-starters-ugmphw?file=src%2Fmain.ts) or view example images below.
 
 ### Sample Forms
 

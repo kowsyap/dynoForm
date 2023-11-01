@@ -1,6 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
-import { DynoFormConfig } from 'dist/ng-dyno-form/lib/ng-dyno-form-config.model';
 import { filter } from 'rxjs';
 
 @Component({
@@ -9,7 +8,7 @@ templateUrl: './app.component.html',
 styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'dinoForm';
+  title = 'dynoForm';
   url = '/demo1';
   constructor(private router:Router){
     this.router.events
