@@ -1,5 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
+import { Validators } from '@angular/forms';
 import { DynoFormConfig } from 'dist/ng-dyno-form/lib/ng-dyno-form-config.model';
+import { NgDynoFormComponent } from 'ng-dyno-form';
 
 @Component({
   selector: 'app-demo1',
@@ -7,7 +9,7 @@ import { DynoFormConfig } from 'dist/ng-dyno-form/lib/ng-dyno-form-config.model'
   styleUrls: ['./demo1.component.css']
 })
 export class Demo1Component {
-  @ViewChild('f1') dynoform:any;
+  @ViewChild('f1') dynoform!:NgDynoFormComponent;
   formConfig:DynoFormConfig[]=[
     //section a
     {name:'heading1',label:`<span class="text-light">Section A</span>`,type:'heading',class:'fs-2 text-center bg-primary',parentClass:'col-12'},
@@ -16,17 +18,17 @@ export class Demo1Component {
     {name:'address',label:'Address',type:'textarea',required:true,section:'a',pattern:'',class:'form-control',parentClass:'col-12',labelClass:'form-label',extra:{rows:2}},
     {name:'address2',label:'Address 2',type:'textarea',required:true,section:'a',pattern:'',class:'form-control',parentClass:'col-12',labelClass:'form-label',extra:{rows:2}},
     {name:'city',label:'City',type:'text',required:true,section:'a',pattern:'',class:'form-control',parentClass:'col-md-6',labelClass:'form-label',extra:{}},
-    {name:'state',label:'State',type:'select',required:true,section:'a',pattern:'',class:'',parentClass:'col-md-4',labelClass:'form-label',extra:{options:[],key:'id',label:'name'}},
+    {name:'state',label:'State (Type 3 letters)',type:'select',required:true,section:'a',pattern:'',class:'',parentClass:'col-md-4',labelClass:'form-label',extra:{options:[],key:'id',label:'name'}},
     {name:'zip',label:'Zip',type:'text',required:true,section:'a',pattern:'',class:'form-control',parentClass:'col-md-2',labelClass:'form-label',extra:{}},
     {name:'check',label:'Check me out',type:'checkbox',required:false,section:'a',pattern:'',class:'form-check-input',parentClass:'col-12 flexgap',labelClass:'form-check-label',extra:{}},
     {name:'signin',label:'Sign in',type:'button',section:'a',class:'btn btn-primary',parentClass:'col-12',extra:{submit:true}},
     //section b
     {name:'heading2',label:`<span class="text-light">Section B</span>`,type:'heading',class:'fs-2 text-center bg-success',parentClass:'col-12'},
     {name:'email2',label:'Email B',type:'text',required:true,section:'b',pattern:'',class:'form-control',parentClass:'col-12 d-flex mb-3',labelClass:'col-sm-2 col-form-label',extra:{}},
-    {name:'password2',label:'Password B',type:'password',required:true,section:'b',pattern:'',class:'form-control',parentClass:'col-12 d-flex mb-3',labelClass:'col-sm-2 col-form-label',extra:{}},
+    {name:'password2',label:'Password B',type:'password',required:true,hideAsterisk:true,section:'b',pattern:'',class:'form-control',parentClass:'col-12 d-flex mb-3',labelClass:'col-sm-2 col-form-label',extra:{hideEye:true}},
     {label:'Join Date',name:'joindate',type:'date',required:true,class:'form-control',section:'b',parentClass:'col-6 d-flex mb-3',value:'10-22-2023',labelClass:'col-sm-4 col-form-label',extra:{format:'MM-DD-YYYY',maxDate:new Date()}},
     {label:'Document',name:'doc',type:'file',required:true,class:'form-control',section:'b',parentClass:'col-6 d-flex mb-3',value:'10-22-2023',labelClass:'col-sm-4 col-form-label',extra:{customClass:'fileDecor',customText:'Empty'}},
-    {name:'gender',label:'Gender',type:'radio',class:'form-check',parentClass:'col-12 d-flex mb-3',labelClass:'col-sm-2 col-form-label',extra:{options:[{name:'male',id:123},{name:'female',id:456}],key:'id',label:'name'}},
+    {name:'gender',label:'Gender',type:'radio',class:'form-check',required:true,parentClass:'col-12 d-flex mb-3',labelClass:'col-sm-2 col-form-label',extra:{options:[{name:'male',id:123},{name:'female',id:456}],key:'id',label:'name'}},
     {name:'check2',label:'Check me out',type:'checkbox',required:false,section:'b',pattern:'',class:'form-check-input',parentClass:'col-12 flexgap',labelClass:'form-check-label',value:true,extra:{}},
     {name:'signin2',label:'Sign in',type:'button',section:'b',class:'btn btn-success',parentClass:'col-12',extra:{submit:true}},
     {name:'signin3',label:'Sign in All',type:'button',class:'btn btn-warning',parentClass:'col-12 text-end',extra:{submit:true}},
@@ -62,13 +64,19 @@ export class Demo1Component {
     { name: 'West Bengal', id: 181 },
     { name: 'Jammu and Kashmir', id: 651 }
   ];
+  key:string='';
+  multiKeys=[];
+  multiSelectConfig=[
+    {name:'key',type:'select',required:false,pattern:'',class:'',parentClass:'col-md-12',labelClass:'form-label',extra:{options:[...this.formConfig.filter(e=>!['heading','button'].includes(e.type))],key:'name',label:'label',multi:true}},
+  ];
 
-  submit(temp:any){
-    let val = temp.formsubmit();
-    console.log(val);
+  submit(temp?:any){
+    let resp = this.dynoform.sectionSubmit(temp);
+    console.log(resp);
   }
 
   callBackActions(e:any){
+    console.log(e)
     if(e && e?.name==='state' && e?.type==="search"){
       if(e?.event?.term && e?.event?.term?.length>2){
         let term = e.event.term.toLowerCase();
@@ -77,6 +85,49 @@ export class Demo1Component {
         console.log(statelist,this.dynoform.selectList['state'])
       }
     }
+  }
+
+  reset(type:string,key?:any){
+    console.log(this.dynoform,type,key)
+    if(type==='section') this.dynoform.resetValue('section',key);
+    else if(key) this.dynoform.resetValue('all',key);
+    else this.dynoform.resetValue('all',undefined);
+  }
+
+  enable(){
+    this.dynoform.enableField(this.key?this.key:'all');
+  }
+
+  disable(){
+    this.dynoform.disableField(this.key?this.key:'all');
+  }
+
+  addValidation(){
+    this.dynoform.addValidation([Validators.required],...this.multiKeys);
+  }
+
+  clearValidation(){
+    this.dynoform.clearValidation(...this.multiKeys);
+  }
+
+  getFields(e:any){
+    if(e.type==='change' && e.name=='key'){
+      this.multiKeys = e.event.map((o:any)=>o.name);
+    }
+  }
+
+  set(){
+    this.dynoform.setValue('email','johncena@gmail.com');
+  }
+  patch(){
+    let obj = {
+      'email2':'elonmusk@tesla.com',
+      'password2':'123qwe',
+      'joindate': new Date('05-05-2005'),
+      'gender':123,
+      'check2':true
+    };
+    this.dynoform.patchValue(obj);
   }
 
 }

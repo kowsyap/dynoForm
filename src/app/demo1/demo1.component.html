@@ -1,8 +1,55 @@
-<div class="sizeit">
-    <dyno-form [config]="formConfig" [mainClass]="'row g-3'" (callBack)="callBackActions($event)" #f1>
-        <div class="border border-danger text-danger text-center">The End</div>
-    </dyno-form>
+<div class="d-flex gap-2">
+    <div class="sizeit">
+        <dyno-form [config]="formConfig" [mainClass]="'row g-3'" (callBack)="callBackActions($event)" #f1>
+            <div class="border border-danger text-danger text-center">The End</div>
+        </dyno-form>
+    </div>
+    <!-- methods demo -->
+    <div class="options d-flex flex-column gap-2">
+        <h2 class="text-center">Methods</h2>
+        <div class="d-flex flex-column gap-2 border rounded-1 p-2">
+            <h3>Reset</h3>
+            <div class="d-flex gap-1">
+                <button class="btn btn-outline-primary flex-grow-1" (click)="reset('all')">All</button>
+                <button class="btn btn-outline-primary flex-grow-1" (click)="reset('section','a')">A</button>
+                <button class="btn btn-outline-primary flex-grow-1" (click)="reset('section','b')">B</button>    
+                <button class="btn btn-outline-primary flex-grow-1" (click)="reset('all','zip')">Zip</button>    
+            </div>
+        </div>
+        <div class="d-flex flex-column gap-2 border rounded-1 p-2">
+            <select type="text" class="form-select" [(ngModel)]="key">
+                <option [ngValue]="''">All</option>
+                <ng-container *ngFor="let item of formConfig">
+                    <option *ngIf="!['heading','button'].includes(item.type)" [ngValue]="item.name">{{item.label}}</option>
+                </ng-container>
+            </select>
+            <div class="d-flex gap-1 justify-content-end">
+                <button class="btn btn-outline-danger flex-grow-1" (click)="disable()">Disable</button>
+                <button class="btn btn-outline-success flex-grow-1" (click)="enable()">Enable</button>
+            </div>
+        </div>
+        <div class="d-flex flex-column gap-2 border rounded-1 p-2">
+            <h3>Validators</h3>
+            <dyno-form [config]="multiSelectConfig" [mainClass]="" (callBack)="getFields($event)" #f1>
+            </dyno-form>
+            <div class="d-flex gap-1 justify-content-end">
+                <button class="btn btn-outline-danger flex-grow-1" (click)="clearValidation()">Clear</button>
+                <button class="btn btn-outline-success flex-grow-1" (click)="addValidation()">Add</button>
+            </div>
+        </div>
+        <div class="d-flex flex-column gap-2 border rounded-1 p-2">
+            <h3>Set Value </h3>
+            <div class="d-flex gap-1 justify-content-end">
+                <button class="btn btn-outline-primary flex-grow-1" (click)="set()">Email</button>
+                <button class="btn btn-outline-success flex-grow-1" (click)="patch()">Section B</button>
+            </div>
+        </div>
+        <div class="border rounded-1 p-2">
+            <h3>Submit</h3>
+            <div class="d-flex gap-1">
+                <button class="btn btn-outline-info flex-grow-1" (click)="submit()">Form</button>
+                <button class="btn btn-outline-warning flex-grow-1" (click)="submit('a')">Section A</button>
+            </div>
+        </div>
+    </div>
 </div>
-<!-- <div class="mt-2 text-end">
-    <button class="btn btn-primary" (click)="submit(f1)">Submit</button>
-</div> -->

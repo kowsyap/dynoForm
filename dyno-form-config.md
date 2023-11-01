@@ -41,13 +41,17 @@ The `DynoFormConfig` interface represents a configuration object for defining fo
 
 12. `disable` (boolean, optional): Indicates whether the field should be disabled (`true`) or not (`false`). Defaults to `false`.
 
-13. `condition` ((field: any) => boolean, optional): A function that, when provided, defines a condition under which the field should be displayed or hidden. The function takes the current field as its parameter and should return `true` to show the field and `false` to hide it.
+13. `hideAsterisk` (boolean, optional): Hides asterisk(*) if the value is `true`. Defaults to `false`.
+
+14. `condition` ((field: any) => boolean, optional): A function that, when provided, defines a condition under which the field should be displayed or hidden. The function takes the current field as its parameter and should return `true` to show the field and `false` to hide it.
+
 
 ####  ExtraDynoFormConfigMap Interface
 
 The ExtraDynoFormConfigMap interface defines subtypes for the extra property of DynoFormConfig. It maps each DynoFormType to an associated Extra interface. This ensures that the extra property contains only the allowed properties for a given type. Here's a summary of these subtypes:
 
   - `ExtraCommon`: Common properties that can be used for various DynoFormType.
+  - `ExtraPassword`: Properties for password type fields.
   - `ExtraDate`: Properties specific to date-related form fields ('date' and 'daterange').
   - `ExtraOptions`: Properties for form fields with selectable options ('select' and 'radio').
   - `ExtraSubmit`: Properties specific to submit buttons ('button').
@@ -97,7 +101,10 @@ Properties within the `extra` property of the `DynoFormConfig` interface in Mark
 13. **multi** (Optional, for 'select' fields):
     - Description: For select fields, you can allow users to select multiple options if you set this to `true`.
 
-14. **submit** (Optional, for 'button' fields):
+14. **hideEye** (Optional, for 'password' fields):
+    - Description: You can hide the eye icon by setting this to `true`.
+
+15. **submit** (Optional, for 'button' fields):
     - Description: You can specify that a button field should act as a submit button by setting this to `true`.
 
 These settings allow you to customize the behavior and appearance of different types of form fields, making it versatile and flexible for creating dynamic forms.
@@ -105,7 +112,7 @@ These settings allow you to customize the behavior and appearance of different t
 #### Example Usage
 
 ```typescript
-const fieldConfig: DynoFormConfig = {
+const fieldConfig: DynoFormConfig[] = [{
   name: 'gender',
   type: 'select',
   label: 'Gender',
@@ -133,7 +140,7 @@ const fieldConfig: DynoFormConfig = {
     // Your custom logic to determine whether to show or hide the field.
     return true;
   }
-};
+}];
 ```
 
 This example demonstrates how to use the `DynoFormConfig` interface to define a form field configuration. You can customize the properties according to your specific form requirements.

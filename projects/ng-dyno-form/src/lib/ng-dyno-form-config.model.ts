@@ -5,7 +5,7 @@ type DynoFormType = 'text' | 'number' | 'password' | 'email' | 'radio' | 'checkb
 interface ExtraDynoFormConfigMap {
     'text': ExtraCommon;
     'number': ExtraCommon;
-    'password': ExtraCommon;
+    'password': ExtraPassword;
     'email': ExtraCommon;
     'radio': ExtraOptions;
     'checkbox': ExtraCommon;
@@ -22,6 +22,10 @@ interface ExtraCommon {
     validationMessages?: { required?: string; pattern?: string };
     customClass?: string;
     customText?: string;
+}
+
+interface ExtraPassword extends ExtraCommon {
+    hideEye?: boolean;
 }
 
 interface ExtraDate extends ExtraCommon {
@@ -56,6 +60,7 @@ export interface DynoFormConfig {
     label?: string;
     placeholder?: string;
     required?: boolean;
+    hideAsterisk?:boolean;
     pattern?: string | RegExp;
     class?: string;
     parentClass?: string;

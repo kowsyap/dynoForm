@@ -6,8 +6,11 @@
     background-position: right calc(0.375em + 0.1875rem) center;
     background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
 }
-input[type=password].form-control.ng-touched.ng-invalid, input[bsDatepicker].form-control.ng-touched.ng-invalid {
+.password.form-control.ng-touched.ng-invalid, input[bsDatepicker].form-control.ng-touched.ng-invalid {
     background-image: unset;
+}
+.form-check-input.ng-touched.ng-invalid + label{
+    color: red;
 }
 
 ::ng-deep .ng-select{

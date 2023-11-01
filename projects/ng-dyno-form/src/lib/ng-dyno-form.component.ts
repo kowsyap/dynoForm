@@ -17,6 +17,7 @@ export class NgDynoFormComponent {
 
   dynamicForm:FormGroup;
   passwordVisibility:{ [fieldName: string]: boolean } = {};
+  requiredFields:{ [fieldName: string]: boolean } = {};
   selectList:{ [fieldName: string]: any[] } = {};
   nonFormTypes:string[] = ['button','heading'];
 
@@ -40,12 +41,13 @@ export class NgDynoFormComponent {
       this.config.forEach((field:any) => {
         if(field.name && !this.nonFormTypes.includes(field.type)){
           let validators = [];
-          field.required? validators.push(Validators.required): null;
-          field.pattern? validators.push(Validators.pattern(field.pattern)): null;
+          field?.required? validators.push(Validators.required): null;
+          field?.pattern? validators.push(Validators.pattern(field.pattern)): null;
           this.dynamicForm.addControl(field.name, new FormControl({value:field.value||null,disabled:field.disable||false}, validators));
           if(field.type==='file') this.dynamicForm.addControl(field.name+'_name', new FormControl(field?.extra?.fileName||null));
           if (field.type === 'password') this.passwordVisibility[field.name] = false;
           if (field.type === 'select') this.selectList[field.name] = field?.extra?.options||[];
+          if(field.name) this.requiredFields[field.name] = field?.required||false;
         }
       });
     }
@@ -75,6 +77,7 @@ export class NgDynoFormComponent {
       if(this.hasCtrl(ctrl)){
         this.dynamicForm.get(ctrl)?.addValidators(validation);
         this.dynamicForm.get(ctrl)?.updateValueAndValidity();
+        if(this.dynamicForm.get(ctrl)?.validator)this.requiredFields[ctrl]=true;
       }
     });
   }
@@ -84,6 +87,7 @@ export class NgDynoFormComponent {
       if(this.hasCtrl(ctrl)){
         this.dynamicForm.get(ctrl)?.clearValidators();
         this.dynamicForm.get(ctrl)?.updateValueAndValidity();
+        this.requiredFields[ctrl] = false;
       }
     });
   }
@@ -101,17 +105,26 @@ export class NgDynoFormComponent {
     }
   }
 
-  resetValue(...ctrls:any){
-    if(ctrls==='all') this.dynamicForm.reset();
-    else{
-      ctrls.forEach((ctrl:any)=>{
-        if(this.hasCtrl(ctrl)) this.setValue(ctrl,null);
+  resetValue(type:'section'|'all',...ctrls:any){
+    if(type==='section'){
+      let section = arguments.length===2?ctrls[0]:'' ;
+      let controls = this.filterConfig('section',section?section:undefined,false).map((e:any)=>e.name);
+      controls?.forEach((ctrl:any)=>{
+        this.setValue(ctrl,null);
       })
+    }
+    else{
+      if(ctrls?.length===1 && !ctrls[0]) this.dynamicForm.reset();
+      else{
+        ctrls.forEach((ctrl:any)=>{
+          if(this.hasCtrl(ctrl)) this.setValue(ctrl,null);
+        })
+      }
     }
   }
 
   disableField(...ctrls:any){
-    if(ctrls==='all') ctrls = Object.keys(this.dynamicForm.getRawValue());
+    if(ctrls?.length===1 && ctrls[0]==='all') ctrls = Object.keys(this.dynamicForm.getRawValue());
     ctrls.forEach((ctrl:any)=>{
       if(this.hasCtrl(ctrl)){
         this.dynamicForm.get(ctrl)?.disable();
@@ -120,7 +133,7 @@ export class NgDynoFormComponent {
   }
 
   enableField(...ctrls:any){
-    if(ctrls==='all') ctrls = Object.keys(this.dynamicForm.getRawValue());
+    if(ctrls?.length===1 && ctrls[0]==='all') ctrls = Object.keys(this.dynamicForm.getRawValue());
     ctrls.forEach((ctrl:any)=>{
       if(this.hasCtrl(ctrl)){
         this.dynamicForm.get(ctrl)?.enable();
@@ -128,7 +141,7 @@ export class NgDynoFormComponent {
     })
   }
 
-  sectionValidator(section:string){
+  sectionValidator(section?:string){
     if(section||section===''){
       let ctrls = this.filterConfig('section',section?section:undefined,false).map((e:any)=>e.name);
       ctrls?.forEach((ctrl:any)=>{
@@ -146,14 +159,6 @@ export class NgDynoFormComponent {
     return {
       valid : valid,
       values : (section||section==='') ? this.getTypeValues('section',section?section:undefined,false) : this.rawValues
-    }
-  }
-
-  formsubmit(){
-    this.dynamicForm.markAllAsTouched();
-    return {
-      valid : this.dynamicForm.valid,
-      values : this.rawValues
     }
   }
 

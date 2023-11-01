@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgDynoFormModule } from 'ng-dyno-form';
+import { FormsModule } from '@angular/forms';
 import { Demo1Component } from './demo1/demo1.component';
 import { Demo2Component } from './demo2/demo2.component';
 
@@ -20,6 +21,7 @@ import { Demo2Component } from './demo2/demo2.component';
     AppRoutingModule,
     BsDatepickerModule.forRoot(),
     BrowserAnimationsModule,
+    FormsModule,
     NgDynoFormModule
   ],
   providers: [],
