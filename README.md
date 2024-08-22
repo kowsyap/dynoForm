@@ -1,9 +1,5 @@
 
-<<<<<<< HEAD
-# ng-dyno-form Library
-=======
 # DynoForm Library
->>>>>>> dbbb2de26ab685f12649ee45c13e619c1d53c671
 
 Build Dynamic Reactive Forms in Angular with Ease!
 
