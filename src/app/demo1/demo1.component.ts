@@ -1,7 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { Validators } from '@angular/forms';
-import { DynoFormConfig } from 'dist/ng-dyno-form/lib/ng-dyno-form-config.model';
-import { NgDynoFormComponent } from 'ng-dyno-form';
+import { DynoFormConfig, NgDynoFormComponent } from 'ng-dyno-form';
 
 @Component({
   selector: 'app-demo1',

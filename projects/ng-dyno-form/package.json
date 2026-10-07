@@ -1,6 +1,6 @@
 {
   "name": "ng-dyno-form",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Build Dynamic Reactive Forms in Angular with Ease!",
   "keywords": ["dynamic forms","angular","dyno-form","ng-dyno-form"],
   "license": "MIT",
@@ -20,6 +20,7 @@
   "peerDependencies": {
     "@angular/common": "^16.2.0",
     "@angular/core": "^16.2.0",
+    "@angular/forms": "^16.2.0",
     "@ng-select/ng-select": "^11.1.1",
     "bootstrap": "^5.2.3",
     "ngx-bootstrap": "^11.0.2"

@@ -2,7 +2,7 @@
 <form [formGroup]="dynamicForm" [attr.data-bs-theme]="mode">
   <div class="{{ mainClass }}">
     <!-- Loop through form fields -->
-    <ng-container *ngFor="let field of config; let i = index">
+    <ng-container *ngFor="let field of config">
       <div *ngIf="!field.condition || field.condition(dynamicForm.value)" class="{{ field.parentClass }} {{['file',
       'password'].includes(field.type)?'position-relative':''}}">
         <!-- Label for form types non floating -->
@@ -21,13 +21,13 @@
         </ng-container>
         <!-- Input fields for text, number, email, password -->
         <ng-container *ngIf="['text', 'number', 'email', 'password'].includes(field.type)">
-          <input required
+          <input
             [formControlName]="field.name" [placeholder]="field?.placeholder||''"
             [type]="field.type === 'password' ? (passwordVisibility[field.name] ? 'text' : 'password') : field.type"
             class="{{ field.class }} {{field.type === 'password'?'password':''}}"
             (input)="eventCall($event, 'input', field?.section, field.name)"
             (focus)="eventCall($event, 'focus', field?.section, field.name)"
-            (blur)="eventCall($event, 'input', field?.section, field.name)"
+            (blur)="eventCall($event, 'blur', field?.section, field.name)"
           />
           <span class="view-icon" *ngIf="field.type === 'password' && !field?.extra?.hideEye" (click)="passwordVisibility[field.name] = !passwordVisibility[field.name]"
             [ngClass]="!passwordVisibility[field.name] ? 'eye' : 'eye-slash'" style="cursor: pointer;">
@@ -37,13 +37,13 @@
         </ng-container>
         <!-- Textarea field -->
         <ng-container *ngIf="field.type === 'textarea'">
-          <textarea required
+          <textarea
             [formControlName]="field.name"
             class="{{ field.class }}" [placeholder]="field?.placeholder||''"
             rows="{{ field?.extra?.rows || 1 }}"
             (input)="eventCall($event, 'input', field?.section, field.name)"
             (focus)="eventCall($event, 'focus', field?.section, field.name)"
-            (blur)="eventCall($event, 'input', field?.section, field.name)"
+            (blur)="eventCall($event, 'blur', field?.section, field.name)"
           ></textarea>
         </ng-container>
         <!-- Select dropdown -->
@@ -79,17 +79,17 @@
         <!-- Radio buttons -->
         <ng-container *ngIf="field.type === 'radio'">
           <div class="{{ field?.extra?.customClass }}">
-            <ng-container *ngFor="let item of field?.extra?.options || []">
+            <ng-container *ngFor="let item of field?.extra?.options || []; let j = index">
               <div class="{{ field.class }}">
                 <input
                   [formControlName]="field.name"
                   type="radio"
-                  id="radio-{{ i }}"
+                  id="{{ formId }}-{{ field.name }}-{{ j }}"
                   class="{{ field.class }}-input"
                   [value]="field?.extra?.key ? item[field.extra?.key || ''] : item"
                   (change)="eventCall($event, 'change', field?.section, field.name)"
                 />
-                <label class="{{ field.class }}-label" for="radio-{{ i }}">
+                <label class="{{ field.class }}-label" for="{{ formId }}-{{ field.name }}-{{ j }}">
                   {{ field?.extra?.label ? item[field.extra?.label || ''] : item }}
                 </label>
               </div>
@@ -98,7 +98,7 @@
         </ng-container>
         <!-- Date input -->
         <ng-container *ngIf="field.type === 'date'">
-          <input type="text" required
+          <input type="text"
             [formControlName]="field.name"
             class="{{ field.class }}"
             [placeholder]="field?.placeholder||''"
@@ -115,7 +115,7 @@
         </ng-container>
         <!-- Date range input -->
         <ng-container *ngIf="field.type === 'daterange'">
-          <input type="text" required
+          <input type="text"
             [formControlName]="field.name"
             class="{{ field.class }}"
             [placeholder]="field?.placeholder||''"
@@ -134,13 +134,13 @@
         <ng-container *ngIf="field.type === 'file'">
           <input
             [type]="'file'"
-            id="fileInput-{{ i }}"
+            id="{{ formId }}-{{ field.name }}"
             class="{{ field.class }} {{ field?.extra?.customText ? 'd-none' : '' }}"
             (change)="onFileSelected($event, field?.section, field.name)"
             [accept]="field?.extra?.format"
             [disabled]="field.disable">
           <label
-            for="fileInput-{{ i }}"
+            for="{{ formId }}-{{ field.name }}"
             class="{{ field?.extra?.customClass }} {{ field.disable ? 'disabled' : '' }}"
             *ngIf="field?.extra?.customClass">
             {{ dynamicForm.get(field.name + '_name')?.value ? dynamicForm.get(field.name + '_name')?.value : (field?.extra?.customText || 'No file chosen') }}
@@ -148,7 +148,7 @@
         </ng-container>
         <!-- Button -->
         <ng-container *ngIf="field.type === 'button'">
-          <button class="{{ field.class }}" (click)="eventCall($event, 'click', field?.section, field.name, field?.extra?.submit || false)">
+          <button type="button" class="{{ field.class }}" (click)="eventCall($event, 'click', field?.section, field.name, field?.extra?.submit || false)">
             {{ field.label }}
           </button>
         </ng-container>

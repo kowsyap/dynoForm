@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { DynoFormConfig } from 'dist/ng-dyno-form/lib/ng-dyno-form-config.model';
+import { DynoFormConfig } from 'ng-dyno-form';
 
 @Component({
   selector: 'app-demo2',
