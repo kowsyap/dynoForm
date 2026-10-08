@@ -1,0 +1,48 @@
+name: Release
+
+# Publishes ng-dyno-form to npm when a GitHub release is published.
+# Uses npm trusted publishing (OIDC), so no npm token is stored in GitHub.
+# One-time setup on npmjs.com: package settings → Trusted Publisher →
+# GitHub Actions, repository kowsyap/dynoForm, workflow release.yml.
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          registry-url: https://registry.npmjs.org
+
+      # Trusted publishing needs npm 11.5.1 or newer.
+      - run: npm install -g npm@11
+
+      - run: npm ci
+
+      - name: Check tag matches package version
+        run: |
+          version=$(node -p "require('./projects/ng-dyno-form/package.json').version")
+          if [ "${GITHUB_REF_NAME#v}" != "$version" ]; then
+            echo "Tag $GITHUB_REF_NAME does not match package version $version"
+            exit 1
+          fi
+
+      - name: Build library
+        run: npx ng build ng-dyno-form
+
+      - name: Test library
+        run: npx ng test ng-dyno-form --watch=false --browsers=ChromeHeadlessCI
+
+      - name: Publish to npm
+        run: npm publish dist/ng-dyno-form --access public

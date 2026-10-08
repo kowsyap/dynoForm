@@ -2,7 +2,12 @@
   "name": "ng-dyno-form",
   "version": "1.1.0",
   "description": "Build Dynamic Reactive Forms in Angular with Ease!",
-  "keywords": ["dynamic forms","angular","dyno-form","ng-dyno-form"],
+  "keywords": [
+    "dynamic forms",
+    "angular",
+    "dyno-form",
+    "ng-dyno-form"
+  ],
   "license": "MIT",
   "author": {
     "name": "Kowsyap Pranay",
@@ -11,11 +16,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/kowsyap/ng-dyno-form.git"
+    "url": "git+https://github.com/kowsyap/dynoForm.git",
+    "directory": "projects/ng-dyno-form"
   },
-  "homepage": "https://github.com/kowsyap/ng-dyno-form",
-  "scripts": {
-    "build:sass": "sass assets/styles.css"
+  "homepage": "https://github.com/kowsyap/dynoForm/tree/main/projects/ng-dyno-form#readme",
+  "bugs": {
+    "url": "https://github.com/kowsyap/dynoForm/issues"
   },
   "peerDependencies": {
     "@angular/common": "^16.2.0",

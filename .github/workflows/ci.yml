@@ -1,0 +1,31 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Build library
+        run: npx ng build ng-dyno-form
+
+      - name: Test library
+        run: npx ng test ng-dyno-form --watch=false --browsers=ChromeHeadlessCI
+
+      - name: Test demo app
+        run: npx ng test dynoForm --watch=false --browsers=ChromeHeadlessCI
+
+      - name: Build demo app
+        run: npx ng build dynoForm
