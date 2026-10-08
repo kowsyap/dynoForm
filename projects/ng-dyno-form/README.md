@@ -91,6 +91,14 @@ import { NgDynoFormModule } from 'ng-dyno-form';
 export class YourModule { }
 ```
 
+The date pickers need Angular animations. `ng add ngx-bootstrap` sets this up for you; otherwise add `BrowserAnimationsModule` to your root `AppModule` imports.
+
+The config types (`DynoFormConfig` and friends) are exported from the package:
+
+```typescript
+import { DynoFormConfig } from 'ng-dyno-form';
+```
+
 ## Configuration
 
 To configure your dynamic form, create a `DynoFormConfig` array with the desired field settings. Each field can have properties such as `name`, `type`, `label`, `required`, and more. Refer to the [DynoFormConfig Interface](dyno-form-config.md) for details.
@@ -232,6 +240,6 @@ For a complete reference of the `DynoFormConfig` interface, see the [API Referen
 
 ## License
 
-This library is licensed under the [MIT License](#).
+This library is licensed under the [MIT License](LICENSE).
 
 ---

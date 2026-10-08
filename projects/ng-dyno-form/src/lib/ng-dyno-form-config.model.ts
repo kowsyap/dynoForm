@@ -1,8 +1,8 @@
 import { BsDatepickerViewMode } from "ngx-bootstrap/datepicker";
 
-type DynoFormType = 'text' | 'number' | 'password' | 'email' | 'radio' | 'checkbox' | 'select' | 'textarea' | 'button' | 'heading' | 'date' | 'daterange' | 'file';
+export type DynoFormType = 'text' | 'number' | 'password' | 'email' | 'radio' | 'checkbox' | 'select' | 'textarea' | 'button' | 'heading' | 'date' | 'daterange' | 'file';
 
-interface ExtraDynoFormConfigMap {
+export interface ExtraDynoFormConfigMap {
     'text': ExtraCommon;
     'number': ExtraCommon;
     'password': ExtraPassword;
@@ -18,40 +18,42 @@ interface ExtraDynoFormConfigMap {
     'file': ExtraFile;
 }
 
-interface ExtraCommon {
+export interface ExtraCommon {
     validationMessages?: { required?: string; pattern?: string };
     customClass?: string;
     customText?: string;
 }
 
-interface ExtraPassword extends ExtraCommon {
+export interface ExtraPassword extends ExtraCommon {
     hideEye?: boolean;
 }
 
-interface ExtraDate extends ExtraCommon {
-    mode: BsDatepickerViewMode;
+export interface ExtraDate extends ExtraCommon {
+    mode?: BsDatepickerViewMode;
     minDate?: Date;
     maxDate?: Date;
     theme?: string;
     format?: string;
 }
 
-interface ExtraOptions extends ExtraCommon {
+export interface ExtraOptions extends ExtraCommon {
     options?: any[];
     key?: string;
     label?: string;
     theme?: string;
     multi?: boolean;
 }
-interface ExtraSubmit extends ExtraCommon {
+export interface ExtraSubmit extends ExtraCommon {
     submit?: boolean;
 }
-interface ExtraArea extends ExtraCommon {
+export interface ExtraArea extends ExtraCommon {
     rows?: number;
 }
-interface ExtraFile extends ExtraCommon {
+export interface ExtraFile extends ExtraCommon {
     format?: string;
     fileName?: string;
+    /** Maximum file size in bytes; larger files are rejected like a wrong format. */
+    maxSize?: number;
 }
 
 export interface DynoFormConfig {

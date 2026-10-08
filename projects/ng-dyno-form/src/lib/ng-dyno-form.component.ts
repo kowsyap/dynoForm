@@ -1,4 +1,6 @@
 import { Component, EventEmitter, Input, Output, SimpleChanges } from '@angular/core';
+
+let nextFormId = 0;
 import { DynoFormConfig } from './ng-dyno-form-config.model';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
@@ -20,13 +22,16 @@ export class NgDynoFormComponent {
   requiredFields:{ [fieldName: string]: boolean } = {};
   selectList:{ [fieldName: string]: any[] } = {};
   nonFormTypes:string[] = ['button','heading'];
+  readonly formId = `dyno-form-${nextFormId++}`;
 
   constructor(private fb: FormBuilder) {
     this.dynamicForm = this.fb.group({});
   }
 
+  private built = false;
+
   ngOnInit(): void {
-    this.buildForm();
+    if(!this.built) this.buildForm();
   }
 
   ngOnChanges(changes: SimpleChanges){
@@ -36,14 +41,18 @@ export class NgDynoFormComponent {
   }
 
   buildForm(){
+    this.built = true;
     this.dynamicForm = this.fb.group({});
+    this.passwordVisibility = {};
+    this.requiredFields = {};
+    this.selectList = {};
     if(this.config && this.config?.length){
       this.config.forEach((field:any) => {
         if(field.name && !this.nonFormTypes.includes(field.type)){
           let validators = [];
           field?.required? validators.push(Validators.required): null;
           field?.pattern? validators.push(Validators.pattern(field.pattern)): null;
-          this.dynamicForm.addControl(field.name, new FormControl({value:field.value||null,disabled:field.disable||false}, validators));
+          this.dynamicForm.addControl(field.name, new FormControl({value:field.value??null,disabled:field.disable||false}, validators));
           if(field.type==='file') this.dynamicForm.addControl(field.name+'_name', new FormControl(field?.extra?.fileName||null));
           if (field.type === 'password') this.passwordVisibility[field.name] = false;
           if (field.type === 'select') this.selectList[field.name] = field?.extra?.options||[];
@@ -77,7 +86,7 @@ export class NgDynoFormComponent {
       if(this.hasCtrl(ctrl)){
         this.dynamicForm.get(ctrl)?.addValidators(validation);
         this.dynamicForm.get(ctrl)?.updateValueAndValidity();
-        if(this.dynamicForm.get(ctrl)?.validator)this.requiredFields[ctrl]=true;
+        if(this.dynamicForm.get(ctrl)?.hasValidator(Validators.required)) this.requiredFields[ctrl]=true;
       }
     });
   }
@@ -100,8 +109,9 @@ export class NgDynoFormComponent {
   }
 
   patchValue(obj:any){
-    if(obj && this.hasAllKeys(Object.keys(obj))){
-      this.dynamicForm.patchValue(obj);
+    if(obj){
+      const known = Object.keys(obj).filter(key => this.hasCtrl(key));
+      this.dynamicForm.patchValue(known.reduce((acc:any, key) => ({ ...acc, [key]: obj[key] }), {}));
     }
   }
 
@@ -141,20 +151,32 @@ export class NgDynoFormComponent {
     })
   }
 
+  inputId = (field:any) => `${this.formId}-${field.name}`;
+
+  labelId = (field:any) => `${this.inputId(field)}-label`;
+
+  errorId = (field:any) => `${this.inputId(field)}-error`;
+
+  // Radio groups are labelled through aria-labelledby, so their label has no `for`.
+  labelFor = (field:any) => field.type === 'radio' ? null : this.inputId(field);
+
+  showErrors = (field:any) => !!(this.controls[field.name]?.invalid && this.controls[field.name]?.touched);
+
+  isVisible = (field:any) => !field?.condition || field.condition(this.dynamicForm.value);
+
   sectionValidator(section?:string){
+    let fields = (section||section==='') ? this.filterConfig('section',section?section:undefined,false) : (this.config||[]);
+    fields = fields.filter((field:any) => this.hasCtrl(field.name));
     if(section||section===''){
-      let ctrls = this.filterConfig('section',section?section:undefined,false).map((e:any)=>e.name);
-      ctrls?.forEach((ctrl:any)=>{
-        this.dynamicForm.get(ctrl)?.markAsTouched();
-      })
-      return ctrls?.every((ctrl:any)=>this.dynamicForm?.get(ctrl)?.valid);
+      fields.forEach((field:any)=>this.dynamicForm.get(field.name)?.markAsTouched());
     } else{
       this.dynamicForm.markAllAsTouched();
-      return this.dynamicForm.valid;
     }
+    // Disabled controls and fields hidden by their condition don't block submission.
+    return fields.filter(this.isVisible).every((field:any)=>!this.dynamicForm.get(field.name)?.invalid);
   }
 
-  sectionSubmit(section:string){
+  sectionSubmit(section?:string){
     let valid = this.sectionValidator(section);
     return {
       valid : valid,
@@ -178,7 +200,8 @@ export class NgDynoFormComponent {
   onFileSelected(event:any,section:any,name:string){
     let config = this.config.find((e:any)=>e.name===name);
     const file = event.target.files[0];
-    if (file && config && (config?.extra?.format?.includes(file.type)||!config?.extra?.format)) {
+    const maxSize = config?.extra?.maxSize;
+    if (file && config && this.isAcceptedFile(file, config?.extra?.format) && !(maxSize && file.size > maxSize)) {
       const reader = new FileReader();
         reader.onload = (e: any) => {
           this.setValue(name,e.target.result);
@@ -191,6 +214,18 @@ export class NgDynoFormComponent {
       event.target.value=null;
     }
     this.eventCall(event,'file',section,name);
+  }
+
+  /** Checks a file against an `accept`-style list such as "image/*, .pdf, application/zip". */
+  isAcceptedFile(file:File, format?:string){
+    if(!format) return true;
+    const name = file.name.toLowerCase();
+    const type = (file.type||'').toLowerCase();
+    return format.split(',').map(f=>f.trim().toLowerCase()).filter(Boolean).some(rule=>{
+      if(rule.startsWith('.')) return name.endsWith(rule);
+      if(rule.endsWith('/*')) return type.startsWith(rule.slice(0,-1));
+      return type===rule;
+    });
   }
   
 }
