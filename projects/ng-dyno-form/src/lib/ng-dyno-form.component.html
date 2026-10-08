@@ -138,10 +138,10 @@
             class="{{ field.class }} {{ field?.extra?.customText ? 'd-none' : '' }}"
             (change)="onFileSelected($event, field?.section, field.name)"
             [accept]="field?.extra?.format"
-            [disabled]="field.disable">
+            [disabled]="!!controls[field.name]?.disabled">
           <label
             for="{{ formId }}-{{ field.name }}"
-            class="{{ field?.extra?.customClass }} {{ field.disable ? 'disabled' : '' }}"
+            class="{{ field?.extra?.customClass }} {{ controls[field.name]?.disabled ? 'disabled' : '' }}"
             *ngIf="field?.extra?.customClass">
             {{ dynamicForm.get(field.name + '_name')?.value ? dynamicForm.get(field.name + '_name')?.value : (field?.extra?.customText || 'No file chosen') }}
           </label>

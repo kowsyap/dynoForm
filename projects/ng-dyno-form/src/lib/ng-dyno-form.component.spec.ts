@@ -119,6 +119,17 @@ describe('NgDynoFormComponent', () => {
     expect(query('input[type=file]').id).not.toBe(firstId);
   });
 
+  it('disables and enables file inputs through the form methods', () => {
+    const form = render([{ name: 'doc', type: 'file' }]);
+    const input = () => query('input[type=file]') as HTMLInputElement;
+    form.disableField('all');
+    fixture.detectChanges();
+    expect(input().disabled).toBeTrue();
+    form.enableField('doc');
+    fixture.detectChanges();
+    expect(input().disabled).toBeFalse();
+  });
+
   it('renders buttons with type="button" so they do not submit the form', () => {
     render([{ name: 'go', type: 'button', label: 'Go' }]);
     expect(query('button').getAttribute('type')).toBe('button');

@@ -13,6 +13,7 @@
 - Buttons are now `type="button"`, so pressing Enter in a field no longer triggers the first button.
 - `patchValue()` did nothing if the object contained a key that isn't a form field; it now patches the known keys.
 - `addValidation()` showed the required asterisk for any validator; it now only does so for `Validators.required`.
+- `disableField()` / `enableField()` now also disable and enable file inputs.
 - File `format` checks now follow the `accept` syntax, so `image/*` and extensions like `.pdf` work.
 - The library module no longer imports `BrowserModule`/`BrowserAnimationsModule`, which broke lazy-loaded modules. Apps must provide animations themselves (`ng add ngx-bootstrap` already does).
 
