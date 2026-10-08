@@ -56,11 +56,15 @@
 }
 
 .view-icon {
+    border: 0;
+    background: none;
+    color: inherit;
+    cursor: pointer;
     position: absolute;
     bottom: 0;
     transform: translateY(-50%);
     right: 20px;
-    padding-top: 0;
-    padding-bottom: 0;
+    padding: 0;
+    line-height: 0;
     width: 20px;
 }

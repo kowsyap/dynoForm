@@ -151,6 +151,17 @@ export class NgDynoFormComponent {
     })
   }
 
+  inputId = (field:any) => `${this.formId}-${field.name}`;
+
+  labelId = (field:any) => `${this.inputId(field)}-label`;
+
+  errorId = (field:any) => `${this.inputId(field)}-error`;
+
+  // Radio groups are labelled through aria-labelledby, so their label has no `for`.
+  labelFor = (field:any) => field.type === 'radio' ? null : this.inputId(field);
+
+  showErrors = (field:any) => !!(this.controls[field.name]?.invalid && this.controls[field.name]?.touched);
+
   isVisible = (field:any) => !field?.condition || field.condition(this.dynamicForm.value);
 
   sectionValidator(section?:string){
@@ -189,7 +200,8 @@ export class NgDynoFormComponent {
   onFileSelected(event:any,section:any,name:string){
     let config = this.config.find((e:any)=>e.name===name);
     const file = event.target.files[0];
-    if (file && config && this.isAcceptedFile(file, config?.extra?.format)) {
+    const maxSize = config?.extra?.maxSize;
+    if (file && config && this.isAcceptedFile(file, config?.extra?.format) && !(maxSize && file.size > maxSize)) {
       const reader = new FileReader();
         reader.onload = (e: any) => {
           this.setValue(name,e.target.result);

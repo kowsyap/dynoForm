@@ -1,4 +1,4 @@
-// Karma configuration for the ng-dyno-form library.
+// Karma configuration shared by the demo app and the ng-dyno-form library.
 // ChromeHeadlessCI adds --no-sandbox so tests can run in containers/CI.
 module.exports = function (config) {
   config.set({
@@ -14,7 +14,7 @@ module.exports = function (config) {
     client: { clearContext: false },
     jasmineHtmlReporter: { suppressAll: true },
     coverageReporter: {
-      dir: require('path').join(__dirname, '../../coverage/ng-dyno-form'),
+      dir: require('path').join(__dirname, 'coverage'),
       subdir: '.',
       reporters: [{ type: 'html' }, { type: 'text-summary' }]
     },

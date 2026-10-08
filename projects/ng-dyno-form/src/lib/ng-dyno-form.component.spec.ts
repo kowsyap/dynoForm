@@ -149,6 +149,80 @@ describe('NgDynoFormComponent', () => {
     expect(form.requiredFields['zip']).toBeTrue();
   });
 
+  describe('accessibility', () => {
+    it('links labels to their inputs', () => {
+      render([
+        { name: 'email', type: 'text', label: 'Email' },
+        { name: 'bio', type: 'textarea', label: 'Bio', floatLabel: true },
+        { name: 'agree', type: 'checkbox', label: 'Agree' }
+      ]);
+      for (const label of queryAll('label')) {
+        const target = fixture.nativeElement.querySelector('#' + label.getAttribute('for'));
+        expect(target).withContext(label.textContent!).not.toBeNull();
+        expect(['INPUT', 'TEXTAREA']).toContain(target.tagName);
+      }
+    });
+
+    it('labels radio groups with aria-labelledby', () => {
+      render([{ name: 'size', type: 'radio', label: 'Size', extra: { options: ['s', 'm'] } }]);
+      const group = query('[role=radiogroup]');
+      const label = query('#' + group.getAttribute('aria-labelledby'));
+      expect(label.textContent).toContain('Size');
+      expect(label.hasAttribute('for')).toBeFalse();
+    });
+
+    it('marks touched invalid fields and points them at their error message', () => {
+      const form = render([
+        { name: 'email', type: 'text', required: true, extra: { validationMessages: { required: 'Email is required' } } }
+      ]);
+      const input = query('input');
+      expect(input.getAttribute('aria-required')).toBe('true');
+      expect(input.hasAttribute('aria-invalid')).toBeFalse();
+
+      form.sectionValidator();
+      fixture.detectChanges();
+      expect(input.getAttribute('aria-invalid')).toBe('true');
+      expect(query('#' + input.getAttribute('aria-describedby')).textContent).toContain('Email is required');
+    });
+
+    it('makes the password toggle a keyboard-accessible button', () => {
+      render([{ name: 'pw', type: 'password' }]);
+      const toggle = query('button.view-icon') as HTMLButtonElement;
+      expect(toggle.getAttribute('type')).toBe('button');
+      expect(toggle.getAttribute('aria-label')).toBe('Show password');
+      toggle.click();
+      fixture.detectChanges();
+      expect(query('input').getAttribute('type')).toBe('text');
+      expect(toggle.getAttribute('aria-label')).toBe('Hide password');
+      expect(toggle.getAttribute('aria-pressed')).toBe('true');
+    });
+  });
+
+  describe('file size limit', () => {
+    const select = (file: File) => {
+      const input = query('input[type=file]') as HTMLInputElement;
+      const files = new DataTransfer();
+      files.items.add(file);
+      input.files = files.files;
+      input.dispatchEvent(new Event('change'));
+    };
+
+    it('rejects files larger than maxSize', () => {
+      const form = render([{ name: 'doc', type: 'file', extra: { maxSize: 4 } }]);
+      select(new File(['12345'], 'big.txt', { type: 'text/plain' }));
+      expect(form.rawValues.doc).toBe('');
+      expect((query('input[type=file]') as HTMLInputElement).value).toBe('');
+    });
+
+    it('accepts files within maxSize', async () => {
+      const form = render([{ name: 'doc', type: 'file', extra: { maxSize: 4 } }]);
+      select(new File(['1234'], 'ok.txt', { type: 'text/plain' }));
+      await new Promise(resolve => setTimeout(resolve, 50));
+      expect(form.rawValues.doc).toContain('data:text/plain;base64');
+      expect(form.rawValues.doc_name).toBe('ok.txt');
+    });
+  });
+
   describe('file format matching', () => {
     const file = (name: string, type: string) => new File(['x'], name, { type });
     let form: NgDynoFormComponent;

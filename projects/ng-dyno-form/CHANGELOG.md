@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.0.3
+## 1.1.0
 
 ### Fixed
 - Optional `text`, `number`, `email`, `password`, `textarea`, `date` and `daterange` fields were always required, because every input carried a hardcoded `required` attribute.
@@ -19,4 +19,9 @@
 
 ### Added
 - `DynoFormConfig` and the related types are exported from the package.
+- `maxSize` option for `file` fields to reject files larger than a given number of bytes.
+- Accessibility: labels are linked to their fields, radio groups are labelled, invalid and required fields set `aria-invalid` / `aria-required` and point to their error message with `aria-describedby`, and the password visibility toggle is a keyboard-accessible button with an `aria-label`.
 - `@angular/forms` is listed as a peer dependency.
+
+### Deprecated
+- `NgDynoFormService`, which has no functionality. It will be removed in 2.0.

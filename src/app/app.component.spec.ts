@@ -1,4 +1,5 @@
 import { TestBed } from '@angular/core/testing';
+import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
 
@@ -10,20 +11,21 @@ describe('AppComponent', () => {
 
   it('should create the app', () => {
     const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app).toBeTruthy();
+    expect(fixture.componentInstance).toBeTruthy();
   });
 
-  it(`should have as title 'dynoForm'`, () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app.title).toEqual('dynoForm');
-  });
-
-  it('should render title', () => {
+  it('should render the heading and demo buttons', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('.content span')?.textContent).toContain('dynoForm app is running!');
+    expect(compiled.querySelector('h2')?.textContent).toContain('Dynamic Forms');
+    expect(Array.from(compiled.querySelectorAll('button')).map(b => b.textContent?.trim())).toEqual(['Demo 1', 'Demo 2']);
+  });
+
+  it('should navigate when a demo button is clicked', () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    const navigate = spyOn(TestBed.inject(Router), 'navigate').and.resolveTo(true);
+    fixture.componentInstance.redirect('/demo2');
+    expect(navigate).toHaveBeenCalledWith(['/demo2']);
   });
 });

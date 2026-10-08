@@ -84,6 +84,7 @@
               "zone.js/testing"
             ],
             "tsConfig": "tsconfig.spec.json",
+            "karmaConfig": "karma.conf.js",
             "assets": [
               "src/favicon.ico",
               "src/assets"
@@ -125,7 +126,7 @@
               "zone.js",
               "zone.js/testing"
             ],
-            "karmaConfig": "projects/ng-dyno-form/karma.conf.js"
+            "karmaConfig": "karma.conf.js"
           }
         }
       }

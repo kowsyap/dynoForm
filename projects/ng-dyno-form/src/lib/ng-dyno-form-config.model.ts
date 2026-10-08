@@ -52,6 +52,8 @@ export interface ExtraArea extends ExtraCommon {
 export interface ExtraFile extends ExtraCommon {
     format?: string;
     fileName?: string;
+    /** Maximum file size in bytes; larger files are rejected like a wrong format. */
+    maxSize?: number;
 }
 
 export interface DynoFormConfig {

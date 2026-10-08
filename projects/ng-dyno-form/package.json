@@ -1,6 +1,6 @@
 {
   "name": "ng-dyno-form",
-  "version": "1.0.3",
+  "version": "1.1.0",
   "description": "Build Dynamic Reactive Forms in Angular with Ease!",
   "keywords": ["dynamic forms","angular","dyno-form","ng-dyno-form"],
   "license": "MIT",

@@ -80,8 +80,8 @@ Properties within the `extra` property of the `DynoFormConfig` interface in Mark
 6. **label** (Optional, for 'select' and 'radio' fields):
    - Description: You can set a custom label for each option in select and radio fields. This label is what the user sees.
 
-7. **format** (Optional, for date-related fields):
-   - Description: This lets you define the format in which dates should be displayed or accepted.
+7. **format** (Optional, for date-related and 'file' fields):
+   - Description: For date fields, the format in which dates are displayed or accepted. For file fields, the accepted file types in `accept` syntax, e.g. `'image/*'`, `'.pdf,.docx'` or `'image/png, application/pdf'`.
 
 8. **mode** (Optional, for date-related fields):
    - Description: For date fields, you can choose the mode, such as 'day,' 'month,' or 'year.' This determines what the user can select.
@@ -106,6 +106,9 @@ Properties within the `extra` property of the `DynoFormConfig` interface in Mark
 
 15. **submit** (Optional, for 'button' fields):
     - Description: You can specify that a button field should act as a submit button by setting this to `true`.
+
+16. **maxSize** (Optional, for 'file' fields):
+    - Description: The maximum file size in bytes. Larger files are rejected and the field is cleared, the same as a file of the wrong type.
 
 These settings allow you to customize the behavior and appearance of different types of form fields, making it versatile and flexible for creating dynamic forms.
 
