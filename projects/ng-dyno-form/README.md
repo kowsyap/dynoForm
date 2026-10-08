@@ -101,7 +101,7 @@ import { DynoFormConfig } from 'ng-dyno-form';
 
 ## Configuration
 
-To configure your dynamic form, create a `DynoFormConfig` array with the desired field settings. Each field can have properties such as `name`, `type`, `label`, `required`, and more. Refer to the [DynoFormConfig Interface](dyno-form-config.md) for details.
+To configure your dynamic form, create a `DynoFormConfig` array with the desired field settings. Each field can have properties such as `name`, `type`, `label`, `required`, and more. Refer to the [DynoFormConfig Interface](https://github.com/kowsyap/dynoForm/blob/main/projects/ng-dyno-form/dyno-form-config.md) for details.
 
 Here's an example of how you can configure the fields in DynoFormConfig:
 
@@ -210,7 +210,8 @@ Here are the methods available in the DynoForm library:
 Here's an example of how to use the methods in your code:
 
 ```typescript
-import { DynoFormConfig } from 'ng-dyno-form/lib/ng-dyno-form-config.model';
+import { Validators } from '@angular/forms';
+import { NgDynoFormComponent } from 'ng-dyno-form';
 
 
 export class DemoComponent {
@@ -229,17 +230,17 @@ For detailed examples and live demos, visit our [StackBlitz Demo](https://stackb
 
 ### Sample Forms
 
-![Example Image 1](./assets/form1.png)
-![Example Image 2](./assets/form2.png)
-![Example Image 3](./assets/form3.png)
-![Example Image 4](./assets/form4.png)
+![Example Image 1](https://raw.githubusercontent.com/kowsyap/dynoForm/main/src/assets/form1.png)
+![Example Image 2](https://raw.githubusercontent.com/kowsyap/dynoForm/main/src/assets/form2.png)
+![Example Image 3](https://raw.githubusercontent.com/kowsyap/dynoForm/main/src/assets/form3.png)
+![Example Image 4](https://raw.githubusercontent.com/kowsyap/dynoForm/main/src/assets/form4.png)
 
 ## API Reference
 
-For a complete reference of the `DynoFormConfig` interface, see the [API Reference](dyno-form-config.md).
+For a complete reference of the `DynoFormConfig` interface, see the [API Reference](https://github.com/kowsyap/dynoForm/blob/main/projects/ng-dyno-form/dyno-form-config.md).
 
 ## License
 
-This library is licensed under the [MIT License](LICENSE).
+This library is licensed under the [MIT License](https://github.com/kowsyap/dynoForm/blob/main/LICENSE).
 
 ---
